@@ -1,10 +1,12 @@
+data "google_compute_zones" "available" {}
+
 resource "google_container_cluster" "staging-gkecluster" {
   name = "staging-gkecluster"
-  zone = "us-central1-a"
+  zone = "${data.google_compute_zones.available.names[0]}"
   initial_node_count = 2
 
   additional_zones = [
-    "us-central1-b",
+    "${data.google_compute_zones.available.names[1]}",
   ]
 
   master_auth {
